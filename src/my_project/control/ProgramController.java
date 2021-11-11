@@ -61,7 +61,7 @@ public class ProgramController {
     }
 
     public void addStackToQueue(){
-        StackBall newStackBall = new StackBall(650,50,topBallInStack,viewController);
+        StackBall newStackBall = new StackBall(50,650,topBallInStack,viewController);
         stackQueue.push(newStackBall);
         topBallInStack = newStackBall;
     }
