@@ -4,7 +4,6 @@ import KAGO_framework.control.Interactable;
 import KAGO_framework.control.ViewController;
 import my_project.control.ProgramController;
 import java.awt.event.MouseEvent;
-
 /**
  * Realisiert ein Objekt, dass alle Eingaben empfängt und dann danach passende Methoden
  * im ProgramController aufruft

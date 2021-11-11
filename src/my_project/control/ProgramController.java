@@ -2,7 +2,9 @@ package my_project.control;
 
 import KAGO_framework.control.ViewController;
 import KAGO_framework.model.abitur.datenstrukturen.Queue;
+import KAGO_framework.model.abitur.datenstrukturen.Stack;
 import my_project.model.QueueBall;
+import my_project.model.StackBall;
 import my_project.view.InputReceiver;
 
 import java.awt.event.MouseEvent;
@@ -19,7 +21,9 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Queue<QueueBall> ballQueue;
+    private Stack<StackBall> stackQueue;
     private QueueBall lastBallinQueue;
+    private StackBall topBallInStack;
 
     /**
      * Konstruktor
@@ -53,6 +57,19 @@ public class ProgramController {
     public void deleteBallFromQueue(){
         if(!ballQueue.isEmpty()){
             if(ballQueue.front().tryToDelete()) ballQueue.dequeue();
+        }
+    }
+
+    public void addStackToQueue(){
+        StackBall newStackBall = new StackBall(650,50,topBallInStack,viewController);
+        stackQueue.push(newStackBall);
+        topBallInStack = newStackBall;
+    }
+
+    public void deleteStackFromQueue(){
+        if(!stackQueue.isEmpty()){
+            if(stackQueue.top().tryToDelete()) stackQueue.pop();
+
         }
     }
 

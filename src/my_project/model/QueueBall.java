@@ -22,6 +22,7 @@ public class QueueBall extends GraphicalObject {
      * @param previousQueueBall der vorhergehende QueueBall (kann auch null sein)
      * @param viewController das ViewController-Objekt des Frameworks
      */
+
     public QueueBall(double x, double y, QueueBall previousQueueBall, ViewController viewController){
         this.x = x;
         this.y = y;
@@ -31,7 +32,6 @@ public class QueueBall extends GraphicalObject {
         deleted = false;
         viewController.draw(this);
     }
-
 
     /**
      * Selbsterklärend: zeichnet den QueueBall. Wird vom Framework aufgerufen.
