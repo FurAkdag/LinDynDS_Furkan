@@ -45,6 +45,8 @@ public class ProgramController {
         new InputReceiver(this,viewController); // darf anonym sein, weil kein Zugriff nötig ist
         // Für die Queue:
         ballQueue = new Queue<>();
+        stackQueue = new Stack<>();
+        topBallInStack = null;
         lastBallinQueue = null; // die letzte Kugel muss für die Animation gemerkt werden
     }
 
@@ -61,15 +63,21 @@ public class ProgramController {
     }
 
     public void addStackToQueue(){
-        StackBall newStackBall = new StackBall(50,650,topBallInStack,viewController);
+        StackBall newStackBall = new StackBall(300,50,true,topBallInStack, viewController);
+        if(!stackQueue.isEmpty()) {
+            stackQueue.top().setHead(false);
+        }
         stackQueue.push(newStackBall);
         topBallInStack = newStackBall;
     }
 
     public void deleteStackFromQueue(){
         if(!stackQueue.isEmpty()){
-            if(stackQueue.top().tryToDelete()) stackQueue.pop();
-
+            if(stackQueue.top().tryToDelete()) {
+                stackQueue.pop();
+                stackQueue.top().setHead(true);
+                stackQueue.top().setPreviousStackBall(null);
+            }
         }
     }
 

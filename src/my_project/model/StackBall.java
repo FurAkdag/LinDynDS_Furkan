@@ -8,40 +8,67 @@ public class StackBall extends GraphicalObject {
 
     private ViewController viewController;
     private StackBall previousStackBall; // Vorgänger des QueueBalls
-    private boolean arrived; // hat der QueueBall den Anfang der Schlange erreicht?
+    private boolean head;
+    private boolean arrived;// hat der QueueBall den Anfang der Schlange erreicht?
     private boolean deleted; // wurde der QueueBall aus der Schlange gelöscht?
+    private double x;
+    private double y;
 
-    public StackBall(double x, double y, StackBall previousStackBall, ViewController viewController){
+    public StackBall(int x, int y,boolean head, StackBall previousStackBall, ViewController viewController){
         this.x = x;
         this.y = y;
         this.previousStackBall = previousStackBall;
         this.viewController = viewController;
-        arrived = false;
+        this.head = head;
         deleted = false;
+        arrived = false;
         viewController.draw(this);
     }
 
     @Override
     public void draw(DrawTool drawTool) {
-        drawTool.drawCircle(x,y,20);
+        if(head && arrived){
+            drawTool.drawFilledCircle(x,y,20);
+        }else {
+            drawTool.drawCircle(x, y, 20);
+        }
     }
-
+    @Override
     public void update(double dt){
         if(!arrived){
-            if(previousStackBall == null || x > previousStackBall.getY()+50) y -= 100*dt;
-            if (y < 100) arrived = true;
+            if(previousStackBall == null || y > previousStackBall.getY() + 50) y -= dt*100;
+            if(previousStackBall == null) {
+                if(y < 50) arrived = true;
+            }else if(y >= previousStackBall.getY() - 50) arrived = true;
         }
         if(deleted){
-            y -= 200*dt;
-            if(y < -25) viewController.removeDrawable(this);
+            x += 300*dt;
+            if(x > 600) viewController.removeDrawable(this);
         }
     }
 
     public boolean tryToDelete(){
-        if(arrived){
+        if(head && arrived) {
             deleted = true;
-            return deleted;
+            return true;
         }
         return false;
+
+    }
+
+    public void setHead(boolean head){
+        this.head = head;
+    }
+
+    public boolean isHead() {
+        return head;
+    }
+
+    public boolean isArrived() {
+        return arrived;
+    }
+
+    public void setPreviousStackBall(StackBall previousStackBall) {
+        this.previousStackBall = previousStackBall;
     }
 }
