@@ -87,6 +87,13 @@ public class ProgramController {
         }
     }
 
+    public void changeTop(){
+        if(!houseStack.isEmpty()) {
+            houseStack.top().doStuff();
+        }
+
+    }
+
     /**
      * Aufruf bei Mausklick
      * @param e das Objekt enthält alle Informationen zum Klick

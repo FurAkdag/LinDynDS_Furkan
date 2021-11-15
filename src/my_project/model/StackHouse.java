@@ -56,5 +56,10 @@ public class StackHouse extends GraphicalObject {
         this.top = top;
     }
 
+    public void doStuff(){
+        x = (Math.random()*550)+10;
+        y = (Math.random()*550)+10;
+
+    }
 
 }
