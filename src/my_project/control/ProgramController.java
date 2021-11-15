@@ -4,7 +4,7 @@ import KAGO_framework.control.ViewController;
 import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import KAGO_framework.model.abitur.datenstrukturen.Stack;
 import my_project.model.QueueBall;
-import my_project.model.StackBall;
+import my_project.model.StackHouse;
 import my_project.view.InputReceiver;
 
 import java.awt.event.MouseEvent;
@@ -21,9 +21,12 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Queue<QueueBall> ballQueue;
-    private Stack<StackBall> stackQueue;
+    private Stack<StackHouse> houseStack;
     private QueueBall lastBallinQueue;
-    private StackBall topBallInStack;
+    private StackHouse previouseStack;
+    private int stackCounter;
+    private int x;
+    private int y;
 
     /**
      * Konstruktor
@@ -45,9 +48,11 @@ public class ProgramController {
         new InputReceiver(this,viewController); // darf anonym sein, weil kein Zugriff nötig ist
         // Für die Queue:
         ballQueue = new Queue<>();
-        stackQueue = new Stack<>();
-        topBallInStack = null;
+        houseStack = new Stack<>();
+        previouseStack = null;
         lastBallinQueue = null; // die letzte Kugel muss für die Animation gemerkt werden
+        x = 275;
+        y = 550;
     }
 
     public void addBallToQueue(){
@@ -62,21 +67,22 @@ public class ProgramController {
         }
     }
 
-    public void addStackToQueue(){
-        StackBall newStackBall = new StackBall(300,50,true,topBallInStack, viewController);
-        if(!stackQueue.isEmpty()) {
-            stackQueue.top().setHead(false);
+    public void addToStack(){
+        StackHouse newStackHouse = new StackHouse(x,y, viewController);
+        if(!houseStack.isEmpty()) {
+            houseStack.top().setTop(false);
         }
-        stackQueue.push(newStackBall);
-        topBallInStack = newStackBall;
+        houseStack.push(newStackHouse);
+        previouseStack = newStackHouse;
+        y -= 40;
     }
 
-    public void deleteStackFromQueue(){
-        if(!stackQueue.isEmpty()){
-            if(stackQueue.top().tryToDelete()) {
-                stackQueue.pop();
-                stackQueue.top().setHead(true);
-                stackQueue.top().setPreviousStackBall(null);
+    public void deleteFromStack(){
+        if(!houseStack.isEmpty()){
+            if(houseStack.top().tryToDelete()) {
+                houseStack.pop();
+                if(!houseStack.isEmpty()) houseStack.top().setTop(true); y += 40;
+
             }
         }
     }

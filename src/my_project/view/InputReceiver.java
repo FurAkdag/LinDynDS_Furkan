@@ -37,9 +37,9 @@ public class InputReceiver implements Interactable {
     @Override
     public void mouseReleased(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON1){ // falls die linke Maustaste geklickt wurde...
-            programController.addStackToQueue();
+            programController.addToStack();
         } else { // falls eine andere Maustaste geklickt wurde
-            programController.deleteStackFromQueue();
+            programController.deleteFromStack();
         }
     }
 
