@@ -39,7 +39,9 @@ public class StackHouse extends GraphicalObject {
     @Override
     public void update(double dt){
         if(deleted){
-            viewController.removeDrawable(this);
+                y -= dt*300;
+            if(y < - 50) viewController.removeDrawable(this);
+
         }
     }
 
