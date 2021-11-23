@@ -13,13 +13,15 @@ public class StackHouse extends GraphicalObject {
     private boolean deleted; // wurde der QueueBall aus der Schlange gelöscht?
     private double x;
     private double y;
+    private boolean didStuff;
 
-    public StackHouse(int x, int y, ViewController viewController){
+    public StackHouse(double x, double y, ViewController viewController){
         this.x = x;
         this.y = y;
         this.viewController = viewController;
         top = true;
         deleted = false;
+        didStuff = false;
         viewController.draw(this);
     }
 
@@ -61,7 +63,10 @@ public class StackHouse extends GraphicalObject {
     public void doStuff(){
         x = (Math.random()*550)+10;
         y = (Math.random()*550)+10;
-
+        didStuff = true;
     }
 
+    public boolean isDidStuff() {
+        return didStuff;
+    }
 }

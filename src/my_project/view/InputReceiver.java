@@ -3,6 +3,8 @@ package my_project.view;
 import KAGO_framework.control.Interactable;
 import KAGO_framework.control.ViewController;
 import my_project.control.ProgramController;
+
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 /**
  * Realisiert ein Objekt, dass alle Eingaben empfängt und dann danach passende Methoden
@@ -24,6 +26,7 @@ public class InputReceiver implements Interactable {
         viewController.register(this);
     }
 
+
     @Override
     public void keyPressed(int key) {
 
@@ -31,8 +34,27 @@ public class InputReceiver implements Interactable {
 
     @Override
     public void keyReleased(int key) {
+        if(key == KeyEvent.VK_N) {
+            programController.moveCurrent("Next");
+        }else if(key == KeyEvent.VK_F){
+            programController.moveCurrent("First");
+        }else if(key == KeyEvent.VK_L){
+            programController.moveCurrent("Last");
+        }else if(key == KeyEvent.VK_A){
+            programController.addBallToCurrent();
+        }else if(key == KeyEvent.VK_S){
+            programController.addBallToLast();
+        }else if(key == KeyEvent.VK_R){
+            programController.removeBallFromCurrent();
+        }else if(key == KeyEvent.VK_C){
+            programController.changeCurrent();
+        }else if(key == KeyEvent.VK_B){
+            programController.returnCurrent();
+        }
 
     }
+
+
 
     @Override
     public void mouseReleased(MouseEvent e) {

@@ -3,6 +3,9 @@ package my_project.control;
 import KAGO_framework.control.ViewController;
 import KAGO_framework.model.abitur.datenstrukturen.Queue;
 import KAGO_framework.model.abitur.datenstrukturen.Stack;
+import KAGO_framework.model.abitur.datenstrukturen.List;
+import my_project.model.ListBall;
+import my_project.model.NullPointer;
 import my_project.model.QueueBall;
 import my_project.model.StackHouse;
 import my_project.view.InputReceiver;
@@ -22,12 +25,12 @@ public class ProgramController {
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Queue<QueueBall> ballQueue;
     private Stack<StackHouse> houseStack;
+    private List<ListBall> ballList;
     private QueueBall lastBallinQueue;
     private StackHouse previouseStack;
-    private int stackCounter;
-    private int x;
+    private NullPointer nullPointer;
     private int y;
-
+    private int number;
     /**
      * Konstruktor
      * Dieser legt das Objekt der Klasse ProgramController an, das den Programmfluss steuert.
@@ -44,16 +47,122 @@ public class ProgramController {
      * Sie erstellt die leeren Datenstrukturen, zu Beginn nur eine Queue
      */
     public void startProgram() {
-        // Für Benutzerinteraktion
-        new InputReceiver(this,viewController); // darf anonym sein, weil kein Zugriff nötig ist
-        // Für die Queue:
+        new InputReceiver(this,viewController);
         ballQueue = new Queue<>();
         houseStack = new Stack<>();
+        ballList = new List<>();
+        nullPointer = new NullPointer(true,viewController);
         previouseStack = null;
-        lastBallinQueue = null; // die letzte Kugel muss für die Animation gemerkt werden
-        x = 275;
-        y = 550;
+        lastBallinQueue = null;
+        y = 350;
+        number = 0;
     }
+
+    public void moveCurrent(String location) {
+        if (!ballList.isEmpty()){
+            nullPointer.setCurrent(false);
+            switch (location) {
+                case "Next":
+                        if (ballList.hasAccess()) {
+                            ballList.getContent().setCurrent(false);
+                            ballList.next();
+                            if (ballList.hasAccess()) {
+                                ballList.getContent().setCurrent(true);
+                            }else{
+                                nullPointer.setCurrent(true);
+                            }
+                        }else {
+                            ballList.toFirst();
+                            ballList.getContent().setCurrent(true);
+                        }
+                    break;
+                case "First":
+                    if(!ballList.isEmpty()){
+                        if(ballList.hasAccess()) ballList.getContent().setCurrent(false);
+                        ballList.toFirst();
+                        ballList.getContent().setCurrent(true);
+                    }
+                    break;
+                case "Last":
+                    if(!ballList.isEmpty()){
+                        if(ballList.hasAccess()) ballList.getContent().setCurrent(false);
+                        ballList.toLast();
+                        ballList.getContent().setCurrent(true);
+                    }
+
+                    break;
+            }
+        }
+    }
+
+
+
+    public void addBallToCurrent(){
+
+        if(!ballList.isEmpty() && ballList.hasAccess()){
+            ListBall newListBall = new ListBall(ballList.getContent().getNumber(),viewController);
+            ListBall tmp = ballList.getContent();
+            ballList.insert(newListBall);
+            while(ballList.hasAccess()){
+                ballList.getContent().addNumber();
+                ballList.next();
+            }
+            ballList.toFirst();
+            while(ballList.getContent() != tmp){
+                ballList.next();
+            }
+            number++;
+        }
+
+    }
+
+    public void addBallToLast() { //Done!
+
+            ListBall newListBall = new ListBall(number, viewController);
+            ballList.append(newListBall);
+            number++;
+
+    }
+
+    public void removeBallFromCurrent(){//Done??
+        if(ballList.hasAccess()) ballList.getContent().setCurrent(false);
+        if(ballList.hasAccess()) {
+            ballList.getContent().delete();
+            ballList.remove();
+
+            ListBall tmp = ballList.getContent();
+
+            if (tmp != null) {
+                while(ballList.hasAccess()){
+                    ballList.getContent().decreaseNumber();
+                    ballList.next();
+                }
+                ballList.toFirst();
+                while(ballList.getContent() != tmp){
+                    ballList.next();
+                }
+            }else{
+                nullPointer.setCurrent(true);
+            }
+            number--;
+        }
+
+        if(ballList.hasAccess()) ballList.getContent().setCurrent(true);
+
+    }
+
+    public void changeCurrent(){
+        if(ballList.hasAccess()) ballList.getContent().changeBall();
+    }
+
+    public void returnCurrent(){
+        if(ballList.hasAccess()){
+            if(ballList.getContent().isTransform()){
+                ballList.getContent().getBack();
+            }
+        }
+    }
+
 
     public void addBallToQueue(){
         QueueBall newQueueBall = new QueueBall(650,50,lastBallinQueue,viewController);
@@ -68,7 +177,7 @@ public class ProgramController {
     }
 
     public void addToStack(){
-        StackHouse newStackHouse = new StackHouse(x,y, viewController);
+        StackHouse newStackHouse = new StackHouse(300,y, viewController);
         if(!houseStack.isEmpty()) {
             houseStack.top().setTop(false);
         }
@@ -81,7 +190,10 @@ public class ProgramController {
         if(!houseStack.isEmpty()){
             if(houseStack.top().tryToDelete()) {
                 houseStack.pop();
-                if(!houseStack.isEmpty()) houseStack.top().setTop(true); y += 40;
+                if(!houseStack.isEmpty()) {
+                    houseStack.top().setTop(true);
+                }
+                y += 40;
 
             }
         }
@@ -89,6 +201,9 @@ public class ProgramController {
 
     public void changeTop(){
         if(!houseStack.isEmpty()) {
+                if(!houseStack.top().isDidStuff()) {
+                    y += 40;
+                }
             houseStack.top().doStuff();
         }
 
@@ -101,6 +216,7 @@ public class ProgramController {
     public void mouseClicked(MouseEvent e){
 
     }
+
 
     /**
      * Aufruf mit jeder Frame

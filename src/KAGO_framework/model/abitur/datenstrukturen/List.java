@@ -242,14 +242,11 @@ public class List<ContentType> {
    */
   public void append(ContentType pContent) {
     if (pContent != null) { // Nichts tun, wenn es keine Inhalt gibt.
-
       if (this.isEmpty()) { // Fall: An leere Liste anfuegen.
         this.insert(pContent);
       } else { // Fall: An nicht-leere Liste anfuegen.
-
         // Neuen Knoten erstellen.
-        ListNode newNode = new ListNode(pContent); 
-
+        ListNode newNode = new ListNode(pContent);
         last.setNextNode(newNode);
         last = newNode; // Letzten Knoten aktualisieren.
       }
